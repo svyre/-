@@ -1,6 +1,6 @@
 # Готовая игра «На себе»
 
-[Актуальный проморолик: новая озвучка и тихая музыка — MP4, 41 секунда, 10,2 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-voice-music.mp4). Голос сопровождается треком «Дверь в неизвестность» с приглушением под речь. [Финальный кадр с логотипами](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner-endcard.jpg).
+[Актуальный проморолик: озвучка и тихая музыка без приглушения под речь — MP4, 41 секунда, 10,2 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-constant-music.mp4). Постоянный уровень музыки, плавное начало и завершение. [Финальный кадр с логотипами](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner-endcard.jpg).
 
 [Новый динамичный ролик с игрой в телефоне — MP4, 37 секунд, 10,4 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-dynamic.mp4)
 
