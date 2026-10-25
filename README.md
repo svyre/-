@@ -1,6 +1,6 @@
 # на себе
 
-[Новый динамичный ролик с игрой в телефоне — MP4, 37 секунд, 10,4 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-dynamic.mp4)
+[Актуальный проморолик с текстами пользователя — MP4, 37 секунд, 9,9 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-user-text.mp4). Без всплывающих плашек, нумерации и нижней подписи. Музыка временная; новая дорожка ожидается.
 
 [Проморолик с геймплеем — MP4, 41 секунда](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo.mp4)
 

@@ -1,6 +1,6 @@
 # Готовая игра «На себе»
 
-[Проморолик без номеров и нижней подписи — MP4](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-clean.mp4). [Раскадровка для текстов](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-scenes.jpg). Текущий черновик ожидает новые тексты и музыку.
+[Актуальный проморолик с текстами пользователя — MP4, 37 секунд, 9,9 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-user-text.mp4). Без всплывающих плашек, нумерации и нижней подписи. Музыка временная; новая дорожка ожидается.
 
 [Новый динамичный ролик с игрой в телефоне — MP4, 37 секунд, 10,4 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-dynamic.mp4)
 
