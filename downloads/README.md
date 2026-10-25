@@ -1,6 +1,6 @@
 # Готовая игра «На себе»
 
-[Актуальный проморолик с текстами пользователя — MP4, 37 секунд, 9,9 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-user-text.mp4). Без всплывающих плашек, нумерации и нижней подписи. Музыка временная; новая дорожка ожидается.
+[Актуальный проморолик с финальным кадром «совместно с Газпромбанком» — MP4, 41 секунда, 10,2 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner.mp4). [Посмотреть финальный кадр](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner-endcard.jpg). Музыка временная.
 
 [Новый динамичный ролик с игрой в телефоне — MP4, 37 секунд, 10,4 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-dynamic.mp4)
 
