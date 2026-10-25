@@ -1,5 +1,7 @@
 # на себе
 
+[Новый динамичный ролик с игрой в телефоне — MP4, 37 секунд, 10,4 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-dynamic.mp4)
+
 [Проморолик с геймплеем — MP4, 41 секунда](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo.mp4)
 
 > **Готовая HTML-игра с новым дизайном:** [скачать актуальный ZIP](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-player-room.zip). Внутри — комната игрока с покупкой улучшений, три варианта жилья, 60 ситуаций, персонажи по референсам с анимациями и 16 локаций. [Инструкция к этой версии](downloads/README.md). Актуальные исходники HTML-версии находятся в папке source внутри архива.
