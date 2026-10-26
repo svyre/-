@@ -4,7 +4,7 @@
 
 [Проморолик с геймплеем — MP4, 41 секунда](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo.mp4)
 
-> **Новая веб-сборка игры:** [ZIP для запуска — 1,3 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-game-web.zip) · [полный проект — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-web-source.zip) · [исходники](web-game/source) · [каждый файл](web-game/FILES.md). Предыдущий ZIP отмечен Defender. Повторная проверка Windows Defender здесь недоступна; [отчёт ClamAV и границы проверки](downloads/SECURITY-CHECK.md). Не отключайте защиту и не добавляйте исключения. В новой версии код, стили и изображения разделены, механики и формат сохранений сохранены.
+> **Хардкор и развитие:** [скачать игру — ZIP, 1,3 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-hardcore.zip) · [полный проект — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-hardcore-source.zip) · [исходники](web-game/source) · [описание всех 114 файлов](web-game/FILES.md). Четвёртая сложность с необратимыми последствиями критических ошибок, сессиями и снижением поддержки летом. Ежемесячное развитие: самообучение, курс или стажировка. Убраны плашки об игровых деньгах и ситуациях. Пройдены 76 проверок; три прежних режима и формат сохранений сохранены.
 
 Финансовая стратегия для учащихся 10–11 классов. Двенадцать месяцев первого года самостоятельной жизни: бюджет, время, работа, учёба, резерв, кредиты и проверка финансовых предложений.
 

@@ -29,3 +29,12 @@ ClamAV 1.4.6, базы main и daily, 3 628 112 сигнатур. Daily верс
 | Прежний na-sebe-reviewed.zip | 2967401 | `eb9667a1ccb64f6fefff9e936dbe55c27017f8934a4ebd29fbf9f01b6fe0659c` |
 | na-sebe-game-web.zip | 1275653 | `e31581f24c3c71368fdc2200adf71491fdaba89f6211caae5dd2859b562e81f0` |
 | na-sebe-web-source.zip | 2954523 | `35f85ab4879a62f82d91e640ef5c2a574842df26ef8f621074d9a6a50516c87a` |
+
+## Обновление: хардкор и развитие
+
+Новая версия сохраняет раздельную веб-сборку и CSP. Пройдены 76 проверок и полный хардкорный год в браузере. ClamAV 1.4.6 проверил два архива и распакованное содержимое: 131 файл, 0 обнаружений. npm audit: 0 известных уязвимостей. Microsoft Defender здесь не запускался.
+
+| Архив | Байты | SHA-256 |
+| --- | ---: | --- |
+| na-sebe-hardcore.zip | 1279934 | `474ee82b1ad2a66236c44bf6be146349053577079f4956b291e7df21f5234cca` |
+| na-sebe-hardcore-source.zip | 2974126 | `b5c256ba1ee3b79dbf56b624394b00d3a0e0c9e0964d383b08cd5484a9931ea3` |

@@ -1,6 +1,6 @@
 # Готовая игра «На себе»
 
-**Новая веб-сборка:** [ZIP для запуска — 1,3 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-game-web.zip) · [полный проект — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-web-source.zip) · [описание файлов](../web-game/FILES.md). Распакуйте всю папку игры, затем откройте index.html. Веб-ресурсы находятся отдельно; исходники и инструменты сборки в архив для запуска не включены.
+**Хардкор и развитие:** [игра — ZIP, 1,3 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-hardcore.zip) · [полный проект — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-hardcore-source.zip) · [все 114 файлов](../web-game/FILES.md). Выбери «Хардкор» при создании новой истории. Развитие доступно каждый месяц; его цена, время и нагрузка входят в общий план, а новые навыки увеличивают будущую оплату работы. Повторяющиеся плашки про игровую валюту и ситуации удалены. 76 проверок, пять проверенных маршрутов хардкора и полный год через интерфейс. Распакуйте всю папку игры, затем откройте index.html.
 
 Предыдущий na-sebe-reviewed.zip отмечен Microsoft Defender как Trojan:Script/Ulthar.A!ml. Не восстанавливайте его из карантина для запуска. Повторная проверка Windows Defender здесь недоступна; ClamAV не обнаружил угроз в прежней и новой сборках. Это не отменяет предупреждение Defender. [Отчёт и хеши](SECURITY-CHECK.md). Не добавляйте исключения и не отключайте защиту.
 
