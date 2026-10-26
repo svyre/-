@@ -1,58 +1,60 @@
-import { EXTRA_SITUATIONS, getScenario } from './game';
-import { STORY_SCENES, type PropKind, type Story } from './story-scenes';
-const places = [
-  'Просмотр нового жилья',
-  'Дорога в университет',
-  'Заказ для студенческого клуба',
-  'Экран с подписками',
-  'Кухня после пар',
-  'Выходные дома',
-  'Перед поездкой домой',
-  'Витрина со скидками',
-  'Учебные материалы',
-  'Объявление об обучении',
-  'Переписка о возврате',
-  'Интернет в дороге',
-  'Квитанции на кухонном столе',
-  'Встреча с друзьями',
-  'Первое тестовое задание',
-  'Студенческий проект',
-  'Объявление о велосипеде',
-  'Финансовые советы в сети',
-  'Неделя перед экзаменами',
-  'Студенческий конкурс',
-  'Отмена летней поездки',
-  'Переписка о зарплате',
-  'Договор на следующий год',
-  'Разбор вещей',
-];
-const props: PropKind[][] = [
-  ['coins', 'list', 'campus'],
-  ['car', 'bike', 'bus'],
-  ['portfolio', 'list', 'search'],
-  ['laptop', 'phone', 'close'],
-  ['food', 'list', 'team'],
-  ['work', 'medicine', 'rest'],
-  ['travel', 'bus', 'calendar'],
-  ['shoe', 'tools', 'calendar'],
-  ['books', 'laptop', 'campus'],
-  ['list', 'course', 'books'],
-  ['code', 'app', 'close'],
-  ['wifi', 'phone', 'books'],
-  ['coins', 'team', 'receipt'],
-  ['gift', 'receipt', 'food'],
-  ['laptop', 'handshake', 'search'],
-  ['portfolio', 'list', 'team'],
-  ['coins', 'bike', 'bus'],
-  ['chart', 'search', 'shield'],
-  ['food', 'calendar', 'rest'],
-  ['portfolio', 'course', 'calendar'],
-  ['handshake', 'receipt', 'calendar'],
-  ['bank', 'list', 'calendar'],
-  ['coins', 'list', 'calendar'],
-  ['gift', 'coins', 'team'],
-];
-const newScenes: Record<string, { place: string; props: PropKind[]; outdoor?: boolean }> = {
+import { getScenario } from './game';
+import { STORY_SCENES, type Story } from './story-scenes';
+type SceneSetting = Pick<Story, 'place' | 'props' | 'outdoor'>;
+
+const extraScenes: Record<string, SceneSetting> = {
+  '0-0': { place: 'Просмотр нового жилья', props: ['coins', 'list', 'campus'], outdoor: false },
+  '0-1': { place: 'Дорога в университет', props: ['car', 'bike', 'bus'], outdoor: true },
+  '1-0': {
+    place: 'Заказ для студенческого клуба',
+    props: ['portfolio', 'list', 'search'],
+    outdoor: false,
+  },
+  '1-1': { place: 'Экран с подписками', props: ['laptop', 'phone', 'close'], outdoor: false },
+  '2-0': { place: 'Кухня после пар', props: ['food', 'list', 'team'], outdoor: false },
+  '2-1': { place: 'Выходные дома', props: ['work', 'medicine', 'rest'], outdoor: false },
+  '3-0': { place: 'Перед поездкой домой', props: ['travel', 'bus', 'calendar'], outdoor: true },
+  '3-1': { place: 'Витрина со скидками', props: ['shoe', 'tools', 'calendar'], outdoor: false },
+  '4-0': { place: 'Учебные материалы', props: ['books', 'laptop', 'campus'], outdoor: false },
+  '4-1': { place: 'Объявление об обучении', props: ['list', 'course', 'books'], outdoor: false },
+  '5-0': { place: 'Переписка о возврате', props: ['code', 'app', 'close'], outdoor: false },
+  '5-1': { place: 'Интернет в дороге', props: ['wifi', 'phone', 'books'], outdoor: false },
+  '6-0': {
+    place: 'Квитанции на кухонном столе',
+    props: ['coins', 'team', 'receipt'],
+    outdoor: false,
+  },
+  '6-1': { place: 'Встреча с друзьями', props: ['gift', 'receipt', 'food'], outdoor: false },
+  '7-0': {
+    place: 'Первое тестовое задание',
+    props: ['laptop', 'handshake', 'search'],
+    outdoor: false,
+  },
+  '7-1': { place: 'Студенческий проект', props: ['portfolio', 'list', 'team'], outdoor: false },
+  '8-0': { place: 'Объявление о велосипеде', props: ['coins', 'bike', 'bus'], outdoor: true },
+  '8-1': {
+    place: 'Финансовые советы в сети',
+    props: ['chart', 'search', 'shield'],
+    outdoor: false,
+  },
+  '9-0': { place: 'Неделя перед экзаменами', props: ['food', 'calendar', 'rest'], outdoor: false },
+  '9-1': {
+    place: 'Студенческий конкурс',
+    props: ['portfolio', 'course', 'calendar'],
+    outdoor: false,
+  },
+  '10-0': {
+    place: 'Отмена летней поездки',
+    props: ['handshake', 'receipt', 'calendar'],
+    outdoor: true,
+  },
+  '10-1': { place: 'Переписка о зарплате', props: ['bank', 'list', 'calendar'], outdoor: false },
+  '11-0': {
+    place: 'Договор на следующий год',
+    props: ['coins', 'list', 'calendar'],
+    outdoor: false,
+  },
+  '11-1': { place: 'Разбор вещей', props: ['gift', 'coins', 'team'], outdoor: false },
   parcel: { place: 'Пункт выдачи заказов', props: ['gift', 'receipt', 'tools'] },
   qr: { place: 'Столик в кафе', props: ['code', 'handshake', 'close'] },
   cashback: { place: 'Учебное приложение Газпромбанка', props: ['gift', 'app', 'shield'] },
@@ -78,20 +80,15 @@ const newScenes: Record<string, { place: string; props: PropKind[]; outdoor?: bo
   weather: { place: 'Дождь перед встречей', props: ['car', 'bus', 'laptop'], outdoor: true },
   'meal-course': { place: 'Кухня общежития', props: ['course', 'food', 'gift'] },
 };
+
 export function extraStory(id: string, month = 0): Story {
   const scenario = getScenario(id)!;
   if (id.startsWith('main-')) return { ...STORY_SCENES[Number(id.slice(5))], line: scenario.lead };
-  const entry = EXTRA_SITUATIONS[id];
-  const index = entry ? entry.month * 2 + Number(id.split('-')[1]) : -1;
-  const scene = newScenes[id] || {
-    place: places[index],
-    props: props[index],
-    outdoor: [1, 6, 16, 20].includes(index),
-  };
+  const scene = extraScenes[id];
   return {
     ...STORY_SCENES[month],
     ...scene,
     line: scenario.lead,
-    response: scenario.options.map((o) => `${o.title}. Решение добавлено в план.`),
+    response: scenario.options.map((option) => `${option.title}. Решение добавлено в план.`),
   };
 }

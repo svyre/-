@@ -15,22 +15,16 @@ export function DifficultyBars({ level }: { level: DifficultyId }) {
 export function DifficultyPicker({
   value,
   onChange,
-  classroom = false,
 }: {
   value: DifficultyId;
-  onChange: (d: DifficultyId) => void;
-  classroom?: boolean;
+  onChange: (settings: DifficultyId) => void;
 }) {
   const selected = DIFFICULTIES[value];
   return (
     <>
       <fieldset className="difficulty-picker">
         <legend>Сложность</legend>
-        <p>
-          {classroom
-            ? 'Одинаковые условия для всех команд в комнате.'
-            : 'Выбери условия для своего года. Сложность сохраняется до финала.'}
-        </p>
+        <p>Выбери условия для своего года. Сложность сохраняется до финала.</p>
         <div className="difficulty-options">
           {(Object.entries(DIFFICULTIES) as [DifficultyId, typeof selected][]).map(([id, d]) => (
             <label className={'difficulty-option ' + (value === id ? 'selected' : '')} key={id}>

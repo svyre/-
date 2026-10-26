@@ -1,5 +1,3 @@
-// Пересчёт истории с одним изменённым решением и теми же остальными планами.
-
 import { MONTHS, initialState } from './config';
 import { validatePlan } from './planning';
 import { settle } from './settlement';
@@ -15,15 +13,15 @@ export function replay(
 ) {
   let state = initialState(difficulty);
   const result: Report[] = [];
-  let trimmed = 0;
+  let trimmedTransfers = 0;
   for (let monthIndex = 0; monthIndex < reports.length; monthIndex++) {
-    let plan = clone(reports[monthIndex].plan);
+    const plan = clone(reports[monthIndex].plan);
     if (monthIndex === changedMonth) plan.choice = choice;
     const oldWithdraw = plan.withdraw;
     const oldSell = plan.sell;
     plan.withdraw = Math.min(plan.withdraw, Math.floor(state.savings));
     plan.sell = Math.min(plan.sell, Math.floor(state.fund));
-    trimmed += oldWithdraw - plan.withdraw + oldSell - plan.sell;
+    trimmedTransfers += oldWithdraw - plan.withdraw + oldSell - plan.sell;
     const validationError = validatePlan(plan, state, monthIndex, false, difficulty);
     if (validationError) throw new Error(MONTHS[monthIndex] + ': ' + validationError);
     try {
@@ -42,11 +40,11 @@ export function replay(
         reports[monthIndex].plan.invest,
         Math.max(0, availableCash - plan.save),
       );
-      trimmed += requested - plan.save - plan.invest;
-      const r = settle(state, plan, monthIndex, goal, true, difficulty);
-      state = r.after;
-      result.push(r);
+      trimmedTransfers += requested - plan.save - plan.invest;
+      const report = settle(state, plan, monthIndex, goal, true, difficulty);
+      state = report.after;
+      result.push(report);
     }
   }
-  return { state, reports: result, trimmed };
+  return { state, reports: result, trimmed: trimmedTransfers };
 }

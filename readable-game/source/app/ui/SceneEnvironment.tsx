@@ -1,5 +1,5 @@
-import { memo } from 'react';
 import { LOCATIONS, type LocationId } from '@/lib/locations';
+import { memo } from 'react';
 import { bankLogo } from './bank-brand';
 
 const ink = '#536c77';

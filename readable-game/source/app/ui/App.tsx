@@ -26,14 +26,15 @@ import {
   X,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { PartnerMark } from './Brand';
 import { CharacterPicker } from './Character';
 import { DifficultyPicker } from './DifficultyPicker';
 import { Game } from './Game';
 import { ReportView } from './History';
 import { Home } from './Home';
 import { Glossary, Guide } from './Info';
+import { Modal } from './Modal';
 import { Results } from './Results';
-import { Modal, PartnerMark } from './shared';
 
 type Page = 'home' | 'play' | 'glossary' | 'guide' | 'results';
 export default function App() {

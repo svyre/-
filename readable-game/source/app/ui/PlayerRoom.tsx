@@ -99,7 +99,9 @@ export function PlayerRoom({
     setNight(next);
     try {
       localStorage.setItem('na-sebe-room-light', next ? 'night' : 'day');
-    } catch {}
+    } catch {
+      // При запрете записи свет всё равно меняется до перезагрузки страницы.
+    }
   };
   const note = (id: RoomAction) =>
     id === 'events'
@@ -253,14 +255,12 @@ export function RoomShop({
   state,
   plan,
   month,
-  disabled,
   onChange,
   onClose,
 }: {
   state: GameState;
   plan: Plan;
   month: number;
-  disabled: boolean;
   onChange: (items: RoomItemId[]) => void;
   onClose: () => void;
 }) {
@@ -321,7 +321,7 @@ export function RoomShop({
               </div>
               <button
                 type="button"
-                disabled={disabled || bought || (gift && !inPlan)}
+                disabled={bought || (gift && !inPlan)}
                 aria-pressed={inPlan}
                 aria-label={
                   bought

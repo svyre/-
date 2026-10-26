@@ -1,5 +1,3 @@
-// Улучшения комнаты: каталог, постоянная помощь и подарки из ситуаций.
-
 import type { GameState, Plan, RoomItemId } from './types';
 
 export const ROOM_ITEMS = {

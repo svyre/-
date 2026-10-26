@@ -4,7 +4,7 @@
 
 [Проморолик с геймплеем — MP4, 41 секунда](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo.mp4)
 
-> **Оптимизированная HTML-игра с читаемыми исходниками:** [скачать актуальный ZIP — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-optimized.zip). [Объяснение всех 94 файлов](readable-game/FILES.md) · [Результаты оптимизации](readable-game/PERFORMANCE.md) · [Архитектура](readable-game/ARCHITECTURE.md) · [Исходники HTML-версии](readable-game/source). Страница уменьшена на 38%, устранены лишние отрисовки, анимации вне экрана приостанавливаются. Комната, улучшения, персонажи, 60 ситуаций и совместимость сохранений сохранены. Пройдены 60 проверок.
+> **Актуальная HTML-игра после проверки кода:** [скачать ZIP — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-reviewed.zip). [Объяснение всех 95 файлов](readable-game/FILES.md) · [Правки и изученные источники](readable-game/CODE_REVIEW.md) · [Результаты оптимизации](readable-game/PERFORMANCE.md) · [Архитектура](readable-game/ARCHITECTURE.md) · [Исходники HTML-версии](readable-game/source). Упрощены имена, условия, настройки сцен и соло-интерфейс. Сохранены оформление, правила, совместимость сохранений и оптимизации: страница легче на 38% по сравнению с первой читаемой версией. Пройдены 60 проверок.
 
 Финансовая стратегия для учащихся 10–11 классов. Двенадцать месяцев первого года самостоятельной жизни: бюджет, время, работа, учёба, резерв, кредиты и проверка финансовых предложений.
 

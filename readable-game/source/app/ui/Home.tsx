@@ -236,41 +236,43 @@ export function Home({ solo, onSolo, onDifficulty, onGuide, onResults }: HomePro
           </p>
         </div>
         <div className="new-level-grid">
-          {(Object.entries(DIFFICULTIES) as [DifficultyId, typeof level][]).map(([id, d]) => (
-            <article className={`new-level level-${id}`} key={id}>
-              <div className="new-level-top">
-                <span className="level-symbol" aria-hidden="true">
-                  {id === 'first' ? (
-                    <House size={25} />
-                  ) : id === 'balance' ? (
-                    <Wallet size={25} />
-                  ) : (
-                    <Flag size={25} />
-                  )}
-                </span>
-                <span className="level-character">{levelNames[id]}</span>
-              </div>
-              <h3>{d.name}</h3>
-              <p>{d.description}</p>
-              <div className="level-start">
-                <span>На старте</span>
-                <b>{rub(d.cash + d.savings)}</b>
-              </div>
-              <dl>
-                <div>
-                  <dt>Поддержка в месяц</dt>
-                  <dd>{rub(d.support)}</dd>
+          {(Object.entries(DIFFICULTIES) as [DifficultyId, typeof level][]).map(
+            ([id, settings]) => (
+              <article className={`new-level level-${id}`} key={id}>
+                <div className="new-level-top">
+                  <span className="level-symbol" aria-hidden="true">
+                    {id === 'first' ? (
+                      <House size={25} />
+                    ) : id === 'balance' ? (
+                      <Wallet size={25} />
+                    ) : (
+                      <Flag size={25} />
+                    )}
+                  </span>
+                  <span className="level-character">{levelNames[id]}</span>
                 </div>
-                <div>
-                  <dt>Время в месяц</dt>
-                  <dd>{d.hours} ч</dd>
+                <h3>{settings.name}</h3>
+                <p>{settings.description}</p>
+                <div className="level-start">
+                  <span>На старте</span>
+                  <b>{rub(settings.cash + settings.savings)}</b>
                 </div>
-              </dl>
-              <button className="level-start-button" onClick={() => onDifficulty(id)}>
-                Выбрать «{d.name}»<ArrowUpRight size={18} />
-              </button>
-            </article>
-          ))}
+                <dl>
+                  <div>
+                    <dt>Поддержка в месяц</dt>
+                    <dd>{rub(settings.support)}</dd>
+                  </div>
+                  <div>
+                    <dt>Время в месяц</dt>
+                    <dd>{settings.hours} ч</dd>
+                  </div>
+                </dl>
+                <button className="level-start-button" onClick={() => onDifficulty(id)}>
+                  Выбрать «{settings.name}»<ArrowUpRight size={18} />
+                </button>
+              </article>
+            ),
+          )}
         </div>
       </section>
       <section className="how-section" aria-labelledby="how-title">

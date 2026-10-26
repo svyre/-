@@ -1,4 +1,5 @@
 import type { CharacterId } from '@/lib/character';
+import { downloadCsv } from '@/lib/csv';
 import {
   DIFFICULTIES,
   GOALS,
@@ -30,7 +31,7 @@ import { useState } from 'react';
 import { CapitalChart } from './CapitalChart';
 import { HistoryList } from './History';
 import { FinalRoom } from './PlayerRoom';
-import { Badge, Meter, downloadCsv } from './shared';
+import { Badge, Meter } from './shared';
 export function Results({
   data,
   onBack,
@@ -40,12 +41,14 @@ export function Results({
   onBack: () => void;
   onRestart: () => void;
 }) {
-  const [changed, setChanged] = useState(0);
-  const [choice, setChoice] = useState('');
-  const [alt, setAlt] = useState<ReturnType<typeof replay> | null>(null);
+  const [comparisonMonth, setComparisonMonth] = useState(0);
+  const [alternativeChoice, setAlternativeChoice] = useState('');
+  const [alternativeResult, setAlternativeResult] = useState<ReturnType<typeof replay> | null>(
+    null,
+  );
   const [error, setError] = useState('');
   const [tab, setTab] = useState<'overview' | 'history'>('overview');
-  const done = data.month >= 12;
+  const yearComplete = data.month >= 12;
   const stats = evaluate(
     data.state,
     data.goal,
@@ -53,12 +56,14 @@ export function Results({
     Math.max(0, data.month - 1),
     data.difficulty,
   );
-  const compare = () => {
+  const compareChoice = () => {
     try {
-      setAlt(replay(data.reports, changed, choice, data.goal, data.difficulty));
+      setAlternativeResult(
+        replay(data.reports, comparisonMonth, alternativeChoice, data.goal, data.difficulty),
+      );
       setError('');
     } catch (e) {
-      setAlt(null);
+      setAlternativeResult(null);
       setError(e instanceof Error ? e.message : 'Этот вариант требует другого плана времени.');
     }
   };
@@ -84,30 +89,32 @@ export function Results({
         'Помощь комнаты: учёба',
         'Помощь комнаты: ресурс',
       ],
-      ...data.reports.map((r) => [
-        MONTHS[r.month],
+      ...data.reports.map((report) => [
+        MONTHS[report.month],
         [
-          planScenario(r.plan, r.month).options.find((o) => o.id === r.plan.choice)?.title,
-          ...(r.extras || []).map(
-            (e) => getScenario(e.scenario)?.options.find((o) => o.id === e.choice)?.title,
+          planScenario(report.plan, report.month).options.find(
+            (option) => option.id === report.plan.choice,
+          )?.title,
+          ...(report.extras || []).map(
+            (e) => getScenario(e.scenario)?.options.find((option) => option.id === e.choice)?.title,
           ),
         ]
           .filter(Boolean)
           .join(' / '),
-        r.after.cash,
-        r.after.savings,
-        r.after.fund,
-        debt(r.after),
-        capital(r.after),
-        r.after.education,
-        r.after.energy,
-        r.after.skills,
-        r.score,
-        HOUSING.find((h) => h.id === r.plan.housing)?.name || '',
-        (r.room?.purchased || []).map((id) => ROOM_ITEMS[id].name).join(' / '),
-        (r.room?.gifted || []).map((id) => ROOM_ITEMS[id].name).join(' / '),
-        r.room?.education || 0,
-        r.room?.energy || 0,
+        report.after.cash,
+        report.after.savings,
+        report.after.fund,
+        debt(report.after),
+        capital(report.after),
+        report.after.education,
+        report.after.energy,
+        report.after.skills,
+        report.score,
+        HOUSING.find((h) => h.id === report.plan.housing)?.name || '',
+        (report.room?.purchased || []).map((id) => ROOM_ITEMS[id].name).join(' / '),
+        (report.room?.gifted || []).map((id) => ROOM_ITEMS[id].name).join(' / '),
+        report.room?.education || 0,
+        report.room?.energy || 0,
       ]),
     ]);
   return (
@@ -115,10 +122,10 @@ export function Results({
       <div className="page-heading">
         <div>
           <span className="eyebrow">
-            {done ? 'ТВОЙ ПЕРВЫЙ ГОД / ИТОГИ' : 'ТВОЯ СТРАТЕГИЯ / ПРОМЕЖУТОЧНЫЙ РЕЗУЛЬТАТ'}
+            {yearComplete ? 'ТВОЙ ПЕРВЫЙ ГОД / ИТОГИ' : 'ТВОЯ СТРАТЕГИЯ / ПРОМЕЖУТОЧНЫЙ РЕЗУЛЬТАТ'}
           </span>
           <h1>
-            {done ? 'Первый год — за плечами' : 'Каждый месяц — шаг вперёд'}
+            {yearComplete ? 'Первый год — за плечами' : 'Каждый месяц — шаг вперёд'}
             <span className="lime-dot">.</span>
           </h1>
           <p>
@@ -127,7 +134,7 @@ export function Results({
           </p>
         </div>
         <div className="heading-actions">
-          {!done && (
+          {!yearComplete && (
             <button className="button secondary" onClick={onBack}>
               <ArrowLeft size={16} />К игре
             </button>
@@ -159,7 +166,7 @@ export function Results({
           <section className="results-hero">
             <div>
               <Badge tone="green">
-                {done
+                {yearComplete
                   ? stats.achieved
                     ? 'Цель достигнута'
                     : 'Год завершён'
@@ -173,7 +180,7 @@ export function Results({
                     : 'Уже есть опыт, на который можно опереться.'}
               </h2>
               <p>
-                {done
+                {yearComplete
                   ? 'Посмотри, какие решения помогли, а какие потребовали пересмотра.'
                   : 'Это промежуточные баллы. Дальнейшие решения ещё изменят результат.'}
               </p>
@@ -264,11 +271,11 @@ export function Results({
             </div>
             <CapitalChart
               reports={data.reports}
-              alternative={alt?.reports}
+              alternative={alternativeResult?.reports}
               difficulty={data.difficulty}
             />
           </section>
-          {done && (
+          {yearComplete && (
             <FinalRoom
               state={data.state}
               housing={data.plans.at(-1)?.housing || 'dorm'}
@@ -297,17 +304,17 @@ export function Results({
                 <label className="field">
                   Какой месяц
                   <select
-                    value={changed}
+                    value={comparisonMonth}
                     onChange={(e) => {
-                      setChanged(Number(e.target.value));
-                      setChoice('');
-                      setAlt(null);
+                      setComparisonMonth(Number(e.target.value));
+                      setAlternativeChoice('');
+                      setAlternativeResult(null);
                       setError('');
                     }}
                   >
-                    {data.reports.map((r) => (
-                      <option key={r.month} value={r.month}>
-                        {MONTHS[r.month]} — {planScenario(r.plan, r.month).title}
+                    {data.reports.map((report) => (
+                      <option key={report.month} value={report.month}>
+                        {MONTHS[report.month]} — {planScenario(report.plan, report.month).title}
                       </option>
                     ))}
                   </select>
@@ -315,24 +322,30 @@ export function Results({
                 <label className="field">
                   Что попробовать
                   <select
-                    value={choice}
+                    value={alternativeChoice}
                     onChange={(e) => {
-                      setChoice(e.target.value);
-                      setAlt(null);
+                      setAlternativeChoice(e.target.value);
+                      setAlternativeResult(null);
                       setError('');
                     }}
                   >
                     <option value="">Выбери другой вариант</option>
-                    {planScenario(data.reports[changed].plan, changed)
-                      .options.filter((o) => o.id !== data.reports[changed]?.plan.choice)
-                      .map((o) => (
-                        <option key={o.id} value={o.id}>
-                          {o.title}
+                    {planScenario(data.reports[comparisonMonth].plan, comparisonMonth)
+                      .options.filter(
+                        (option) => option.id !== data.reports[comparisonMonth]?.plan.choice,
+                      )
+                      .map((option) => (
+                        <option key={option.id} value={option.id}>
+                          {option.title}
                         </option>
                       ))}
                   </select>
                 </label>
-                <button className="button primary" disabled={!choice} onClick={compare}>
+                <button
+                  className="button primary"
+                  disabled={!alternativeChoice}
+                  onClick={compareChoice}
+                >
                   Сравнить
                   <ArrowUpRight size={17} />
                 </button>
@@ -343,7 +356,7 @@ export function Results({
                   {error}
                 </div>
               )}
-              {alt && (
+              {alternativeResult && (
                 <>
                   <div className="comparison-results">
                     <div>
@@ -356,24 +369,27 @@ export function Results({
                     <ArrowRight size={22} />
                     <div>
                       <span>При другом решении</span>
-                      <b>{rub(capital(alt.state))}</b>
+                      <b>{rub(capital(alternativeResult.state))}</b>
                       <small>
-                        Учёба {alt.state.education} · ресурс {alt.state.energy}
+                        Учёба {alternativeResult.state.education} · ресурс{' '}
+                        {alternativeResult.state.energy}
                       </small>
                     </div>
                     <div className="comparison-delta">
                       <span>Разница капитала</span>
                       <b
                         className={
-                          capital(alt.state) >= capital(data.state) ? 'green-text' : 'red-text'
+                          capital(alternativeResult.state) >= capital(data.state)
+                            ? 'green-text'
+                            : 'red-text'
                         }
                       >
-                        {capital(alt.state) > capital(data.state) ? '+' : ''}
-                        {rub(capital(alt.state) - capital(data.state))}
+                        {capital(alternativeResult.state) > capital(data.state) ? '+' : ''}
+                        {rub(capital(alternativeResult.state) - capital(data.state))}
                       </b>
                       <small>
-                        {alt.trimmed
-                          ? `Переводы скорректированы на ${rub(alt.trimmed)}`
+                        {alternativeResult.trimmed
+                          ? `Переводы скорректированы на ${rub(alternativeResult.trimmed)}`
                           : 'Остальные денежные планы сохранены'}
                       </small>
                     </div>
@@ -386,7 +402,7 @@ export function Results({
               )}
             </section>
           )}
-          {done && (
+          {yearComplete && (
             <div className="restart-row">
               <p>
                 Попробуй другую цель или стратегию.

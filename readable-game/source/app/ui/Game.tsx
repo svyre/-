@@ -56,7 +56,7 @@ export function Game({
   const state = data.state;
   const difficultySettings = DIFFICULTIES[data.difficulty];
   const [plan, setPlan] = useState<Plan>(() => {
-    const last = data.plans.at(-1);
+    const previousPlan = data.plans.at(-1);
     return {
       ...defaultPlan(monthIndex),
       roomVersion: 1,
@@ -67,8 +67,13 @@ export function Game({
             extras: situationIds.slice(1).map((scenario) => ({ scenario, choice: '' })),
           }
         : {}),
-      ...(last
-        ? { housing: last.housing, job: last.job, study: last.study, leisure: last.leisure }
+      ...(previousPlan
+        ? {
+            housing: previousPlan.housing,
+            job: previousPlan.job,
+            study: previousPlan.study,
+            leisure: previousPlan.leisure,
+          }
         : {}),
     };
   });
@@ -81,7 +86,10 @@ export function Game({
   const scenario = planScenario(plan, monthIndex);
   const eventCount = 1 + (plan.extras?.length || 0);
   const remainingDecisions =
-    (plan.choice ? 0 : 1) + (plan.extras || []).filter((x) => !x.choice).length;
+    (plan.choice ? 0 : 1) + (plan.extras || []).filter((event) => !event.choice).length;
+  const nextUnansweredSituation = !plan.choice
+    ? 0
+    : (plan.extras || []).findIndex((event) => !event.choice) + 1;
   const currentExtra = activeSituation > 0 ? plan.extras?.[activeSituation - 1] : undefined;
   const situationId = currentExtra?.scenario || plan.scenario || `main-${monthIndex}`;
   const sceneScenario = currentExtra ? getScenario(currentExtra.scenario)! : scenario;
@@ -109,16 +117,19 @@ export function Game({
         : sceneScenario,
     [sceneScenario, replaceDesk],
   );
-  const selectDecision = (value: string) =>
-    activeSituation === 0
-      ? updatePlan('choice', value)
-      : updatePlan(
-          'extras',
-          (plan.extras || []).map((event, i) =>
-            i === activeSituation - 1 ? { ...event, choice: value } : event,
-          ),
-        );
-  const error = useMemo(
+  const selectDecision = (value: string) => {
+    if (activeSituation === 0) {
+      updatePlan('choice', value);
+      return;
+    }
+    updatePlan(
+      'extras',
+      (plan.extras || []).map((event, index) =>
+        index === activeSituation - 1 ? { ...event, choice: value } : event,
+      ),
+    );
+  };
+  const validationError = useMemo(
     () => validatePlan(plan, state, monthIndex, false, data.difficulty),
     [plan, state, monthIndex, data.difficulty],
   );
@@ -133,7 +144,7 @@ export function Game({
     }
   }, [state, plan, monthIndex, data.goal, data.difficulty]);
   const report = forecast.report;
-  const canCommit = !error && !forecast.error;
+  const canCommit = !validationError && !forecast.error;
   const focusSection = (selector: string) =>
     document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   const focusRoomPanel = (selector: string) =>
@@ -156,9 +167,7 @@ export function Game({
     }
     if (action === 'events') {
       setTab('decisions');
-      setActiveSituation(
-        !plan.choice ? 0 : Math.max(0, (plan.extras || []).findIndex((x) => !x.choice) + 1),
-      );
+      setActiveSituation(nextUnansweredSituation);
       focusRoomPanel('.situations-nav');
       return;
     }
@@ -168,19 +177,17 @@ export function Game({
       return;
     }
     setTab('plan');
-    const target =
-      action === 'study'
-        ? '.study-row'
-        : action === 'rest'
-          ? '.leisure-control'
-          : action === 'work'
-            ? 'select[aria-label=Подработка]'
-            : 'select[aria-label=Жильё]';
-    focusRoomPanel(target);
+    const planSections = {
+      study: '.study-row',
+      rest: '.leisure-control',
+      work: 'select[aria-label=Подработка]',
+      housing: 'select[aria-label=Жильё]',
+    };
+    focusRoomPanel(planSections[action]);
   };
   const handleMobileAction = () => {
     if (remainingDecisions) {
-      setActiveSituation(!plan.choice ? 0 : (plan.extras || []).findIndex((x) => !x.choice) + 1);
+      setActiveSituation(nextUnansweredSituation);
       setTab('decisions');
       requestAnimationFrame(() => focusSection('.event-panel'));
       return;
@@ -229,12 +236,10 @@ export function Game({
             </button>
           )}
           <Badge tone="difficulty">{difficultySettings.name}</Badge>
-          {
-            <Badge>
-              <span className="status-dot" />
-              Прогресс сохранён
-            </Badge>
-          }
+          <Badge>
+            <span className="status-dot" />
+            Прогресс сохранён
+          </Badge>
         </div>
       </div>
       <div className="round-heading">
@@ -321,7 +326,6 @@ export function Game({
                   state={state}
                   plan={plan}
                   month={monthIndex}
-                  disabled={false}
                   onChange={(items) => updatePlan('roomBuy', items)}
                   onClose={() => setShopOpen(false)}
                 />
@@ -331,39 +335,37 @@ export function Game({
           {tab === 'decisions' && (
             <>
               <fieldset className="form-reset">
-                {
-                  <div className="situations-nav" aria-label="Ситуации этого месяца">
-                    <div>
-                      <b>
-                        {eventCount - remainingDecisions} из {eventCount} решений
-                      </b>
-                      <span>Один бюджет на весь месяц</span>
-                    </div>
-                    <div
-                      className="situation-tabs"
-                      style={{ gridTemplateColumns: `repeat(${eventCount},minmax(0,1fr))` }}
-                    >
-                      {[
-                        { title: scenario.title, choice: plan.choice },
-                        ...(plan.extras || []).map((x) => ({
-                          title: getScenario(x.scenario)!.title,
-                          choice: x.choice,
-                        })),
-                      ].map((event, i) => (
-                        <button
-                          type="button"
-                          key={i}
-                          aria-pressed={activeSituation === i}
-                          className={activeSituation === i ? 'active' : ''}
-                          onClick={() => setActiveSituation(i)}
-                        >
-                          <span>{event.choice ? <Check size={14} /> : i + 1}</span>
-                          <b>{event.title}</b>
-                        </button>
-                      ))}
-                    </div>
+                <div className="situations-nav" aria-label="Ситуации этого месяца">
+                  <div>
+                    <b>
+                      {eventCount - remainingDecisions} из {eventCount} решений
+                    </b>
+                    <span>Один бюджет на весь месяц</span>
                   </div>
-                }
+                  <div
+                    className="situation-tabs"
+                    style={{ gridTemplateColumns: `repeat(${eventCount},minmax(0,1fr))` }}
+                  >
+                    {[
+                      { title: scenario.title, choice: plan.choice },
+                      ...(plan.extras || []).map((x) => ({
+                        title: getScenario(x.scenario)!.title,
+                        choice: x.choice,
+                      })),
+                    ].map((event, i) => (
+                      <button
+                        type="button"
+                        key={i}
+                        aria-pressed={activeSituation === i}
+                        className={activeSituation === i ? 'active' : ''}
+                        onClick={() => setActiveSituation(i)}
+                      >
+                        <span>{event.choice ? <Check size={14} /> : i + 1}</span>
+                        <b>{event.title}</b>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <StoryScene
                   key={activeSituation}
                   character={character}
@@ -375,7 +377,6 @@ export function Game({
                   selected={currentExtra ? currentExtra.choice : plan.choice}
                   onSelect={selectDecision}
                   energy={state.energy}
-                  disabled={false}
                 />
                 {roomGifts(plan, monthIndex).length > 0 && (
                   <div className="room-story-note">
@@ -455,7 +456,7 @@ export function Game({
           data={data}
           plan={plan}
           report={report}
-          error={error}
+          error={validationError}
           forecastError={forecast.error}
           canCommit={canCommit}
           onCommit={onCommit}
@@ -474,16 +475,12 @@ export function Game({
           </b>
         </button>
         <button className="button primary" onClick={handleMobileAction}>
-          {
-            <>
-              {remainingDecisions
-                ? 'Выбрать решение'
-                : !canCommit
-                  ? 'Проверить план'
-                  : 'Завершить месяц'}
-              <ArrowRight size={17} />
-            </>
-          }
+          {remainingDecisions
+            ? 'Выбрать решение'
+            : !canCommit
+              ? 'Проверить план'
+              : 'Завершить месяц'}
+          <ArrowRight size={17} />
         </button>
       </div>
     </div>

@@ -17,17 +17,20 @@ export function CapitalChart({
   alternative?: Report[];
   difficulty: DifficultyId;
 }) {
-  const a = [capital(initialState(difficulty)), ...reports.map((r) => capital(r.after))];
-  const b = alternative
+  const capitalValues = [
+    capital(initialState(difficulty)),
+    ...reports.map((r) => capital(r.after)),
+  ];
+  const alternativeValues = alternative
     ? [capital(initialState(difficulty)), ...alternative.map((r) => capital(r.after))]
     : [];
-  const min = Math.min(0, ...a, ...b);
-  const max = Math.max(50000, ...a, ...b);
-  const range = max - min || 1;
-  const x = (i: number) => 44 + (i / Math.max(12, reports.length)) * 660;
-  const y = (v: number) => 178 - ((v - min) / range) * 142;
-  const path = (values: number[]) =>
-    values.map((v, i) => `${i ? 'L' : 'M'} ${x(i)} ${y(v)}`).join(' ');
+  const minimum = Math.min(0, ...capitalValues, ...alternativeValues);
+  const maximum = Math.max(50000, ...capitalValues, ...alternativeValues);
+  const valueRange = maximum - minimum || 1;
+  const xForMonth = (i: number) => 44 + (i / Math.max(12, reports.length)) * 660;
+  const yForValue = (v: number) => 178 - ((v - minimum) / valueRange) * 142;
+  const linePath = (values: number[]) =>
+    values.map((v, i) => `${i ? 'L' : 'M'} ${xForMonth(i)} ${yForValue(v)}`).join(' ');
   return (
     <div className="capital-chart">
       <div className="chart-key">
@@ -54,30 +57,52 @@ export function CapitalChart({
             <line
               x1="44"
               x2="708"
-              y1={y(min + range * v)}
-              y2={y(min + range * v)}
+              y1={yForValue(minimum + valueRange * v)}
+              y2={yForValue(minimum + valueRange * v)}
               stroke="#e6e9e3"
               strokeDasharray="4 4"
             />
-            <text x="2" y={y(min + range * v) + 4} fontSize="10" fill="#7b847e">
-              {Math.round((min + range * v) / 1000)}к
+            <text x="2" y={yForValue(minimum + valueRange * v) + 4} fontSize="10" fill="#7b847e">
+              {Math.round((minimum + valueRange * v) / 1000)}к
             </text>
           </g>
         ))}
-        <path d={path(a) + ` L ${x(a.length - 1)} 180 L 44 180 Z`} fill="url(#chart-fill)" />
-        <path d={path(a)} fill="none" stroke="#275fce" strokeWidth="3" strokeLinejoin="round" />
-        {a.map((v, i) => (
-          <circle key={i} cx={x(i)} cy={y(v)} r="3" fill="#275fce">
+        <path
+          d={linePath(capitalValues) + ` L ${xForMonth(capitalValues.length - 1)} 180 L 44 180 Z`}
+          fill="url(#chart-fill)"
+        />
+        <path
+          d={linePath(capitalValues)}
+          fill="none"
+          stroke="#275fce"
+          strokeWidth="3"
+          strokeLinejoin="round"
+        />
+        {capitalValues.map((v, i) => (
+          <circle key={i} cx={xForMonth(i)} cy={yForValue(v)} r="3" fill="#275fce">
             <title>
               {i ? MONTHS[i - 1] : 'Старт'}: {rub(v)}
             </title>
           </circle>
         ))}
-        {b.length > 0 && (
-          <path d={path(b)} fill="none" stroke="#132d50" strokeWidth="3" strokeDasharray="7 5" />
+        {alternativeValues.length > 0 && (
+          <path
+            d={linePath(alternativeValues)}
+            fill="none"
+            stroke="#132d50"
+            strokeWidth="3"
+            strokeDasharray="7 5"
+          />
         )}
         {SHORT_MONTHS.map((m, i) => (
-          <text key={m} x={x(i + 1)} y="208" textAnchor="middle" fontSize="10" fill="#7b847e">
+          <text
+            key={m}
+            x={xForMonth(i + 1)}
+            y="208"
+            textAnchor="middle"
+            fontSize="10"
+            fill="#7b847e"
+          >
             {m}
           </text>
         ))}

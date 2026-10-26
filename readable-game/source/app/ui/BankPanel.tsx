@@ -142,48 +142,53 @@ export function BankPanel({
           {plan.borrow === 0 && (
             <button className="text-button" onClick={() => updatePlan('borrow', 20000)}>
               Добавить в план
-              <PlusIcon />
+              <span aria-hidden="true">+</span>
             </button>
           )}
         </div>
         <div className="credit-offers">
-          {OFFERS.map((o) => {
-            const q = creditQuote(comparisonAmount, o.id);
+          {OFFERS.map((offer) => {
+            const quote = creditQuote(comparisonAmount, offer.id);
             return (
-              <label key={o.id} className={'credit-offer ' + (plan.offer === o.id ? 'chosen' : '')}>
+              <label
+                key={offer.id}
+                className={'credit-offer ' + (plan.offer === offer.id ? 'chosen' : '')}
+              >
                 <input
                   type="radio"
                   name="credit-offer"
-                  checked={plan.offer === o.id}
-                  onChange={() => updatePlan('offer', o.id)}
+                  checked={plan.offer === offer.id}
+                  onChange={() => updatePlan('offer', offer.id)}
                 />
                 <div>
-                  <b>{o.name}</b>
-                  <span className="radio-visual">{plan.offer === o.id && <Check size={11} />}</span>
+                  <b>{offer.name}</b>
+                  <span className="radio-visual">
+                    {plan.offer === offer.id && <Check size={11} />}
+                  </span>
                 </div>
                 <strong>
-                  {o.rate}
+                  {offer.rate}
                   <span>%</span>
                 </strong>
-                <small>годовых · {o.term} мес.</small>
+                <small>годовых · {offer.term} мес.</small>
                 <dl>
                   <div>
                     <dt>В месяц</dt>
-                    <dd>{rub(q.payment)}</dd>
+                    <dd>{rub(quote.payment)}</dd>
                   </div>
                   <div>
                     <dt>Разовая комиссия</dt>
-                    <dd>{rub(o.fee)}</dd>
+                    <dd>{rub(offer.fee)}</dd>
                   </div>
                   <div>
                     <dt>Сервис в месяц</dt>
-                    <dd>{rub(o.monthlyFee)}</dd>
+                    <dd>{rub(offer.monthlyFee)}</dd>
                   </div>
                 </dl>
                 <div className="credit-total">
                   <span>Всего вернёшь</span>
-                  <b>{rub(q.total)}</b>
-                  <small>Сверх суммы кредита: {rub(q.overpay)}</small>
+                  <b>{rub(quote.total)}</b>
+                  <small>Сверх суммы кредита: {rub(quote.overpay)}</small>
                 </div>
               </label>
             );
@@ -235,8 +240,4 @@ export function BankPanel({
       )}
     </>
   );
-}
-
-function PlusIcon() {
-  return <span aria-hidden="true">+</span>;
 }

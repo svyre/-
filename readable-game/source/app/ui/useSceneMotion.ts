@@ -43,7 +43,9 @@ export function useSceneMotion() {
       const next = !value;
       try {
         localStorage.setItem(STORAGE, next ? 'on' : 'off');
-      } catch {}
+      } catch {
+        // Без доступа к хранилищу настройка действует только до перезагрузки.
+      }
       return next;
     });
   const enabled = wanted && !reduced;

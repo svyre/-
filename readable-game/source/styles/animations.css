@@ -1,4 +1,4 @@
-/* Motion belongs to the game world. Controls and budget stay still. */
+/* Анимируется только сцена; элементы управления и бюджет остаются неподвижными. */
 .story-hud-actions {
   display: flex;
   align-items: center;

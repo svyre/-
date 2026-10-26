@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { CHARACTERS, type CharacterId } from '@/lib/character';
 import { MONTHS, SCENARIOS, type Scenario } from '@/lib/game';
 import { storyLocation, type LocationId } from '@/lib/locations';
@@ -14,7 +13,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { bankLogo } from './bank-brand';
 import { CharacterFigure, type CharacterEmotion } from './Character';
 import { SceneEnvironment, SceneSurface } from './SceneEnvironment';
@@ -42,14 +41,13 @@ const World = memo(function World({
   rain: boolean;
   night: boolean;
 }) {
-  const s = scene;
   return (
     <svg
       className="story-world"
       data-location={location}
       viewBox="0 0 900 420"
       role="img"
-      aria-label={`Иллюстрированная сцена: ${s.place}. Персонаж: ${CHARACTERS[character].label.toLowerCase()}`}
+      aria-label={`Иллюстрированная сцена: ${scene.place}. Персонаж: ${CHARACTERS[character].label.toLowerCase()}`}
     >
       <SceneEnvironment location={location} month={month} rain={rain} night={night} />
       <SceneSurface location={location} />
@@ -76,7 +74,7 @@ const World = memo(function World({
             className={choice === i ? 'scene-object-picked' : 'scene-object-rest'}
           >
             <svg x="-5" y="-19" width="170" height="126" viewBox="0 0 180 130">
-              <StoryObject kind={s.props[i]} />
+              <StoryObject kind={scene.props[i]} />
             </svg>
           </g>
         </g>
@@ -103,7 +101,6 @@ export function StoryScene({
   selected,
   onSelect,
   energy,
-  disabled,
   scenarioOverride,
   story,
   chapter = 1,
@@ -118,14 +115,12 @@ export function StoryScene({
   selected: string;
   onSelect: (choice: string) => void;
   energy: number;
-  disabled: boolean;
 }) {
   const [documentOpen, setDocumentOpen] = useState(false);
   const [reaction, setReaction] = useState(0);
   const motion = useSceneMotion();
   const location = storyLocation(scenarioId || `main-${month}`);
   const select = (choice: string) => {
-    if (disabled) return;
     setReaction((n) => n + 1);
     onSelect(choice);
   };
@@ -219,7 +214,6 @@ export function StoryScene({
             <button
               key={o.id}
               type="button"
-              disabled={disabled}
               aria-label={`Предмет: ${o.title}`}
               aria-pressed={index === i}
               className={index === i ? 'picked' : ''}
@@ -234,7 +228,6 @@ export function StoryScene({
             <button
               type="button"
               key={o.id}
-              disabled={disabled}
               className={index === i ? 'picked' : ''}
               aria-pressed={index === i}
               aria-label={`В сцене: ${o.title}`}
@@ -289,7 +282,6 @@ export function StoryScene({
               type="radio"
               name="scenario"
               checked={selected === o.id}
-              disabled={disabled}
               onChange={() => select(o.id)}
             />
             <div className="choice-illustration">

@@ -1,5 +1,5 @@
-import { memo } from 'react';
 import type { CharacterId } from '@/lib/character';
+import { memo } from 'react';
 import { bankLogo } from './bank-brand';
 import { CharacterFigure } from './Character';
 
@@ -9,7 +9,6 @@ const edge = {
   strokeLinejoin: 'round' as const,
   strokeLinecap: 'round' as const,
 };
-/** A cutaway room, with furniture on the same floor plane as the player. */
 export const RoomInterior = memo(function RoomInterior({
   housing,
   owned = [],

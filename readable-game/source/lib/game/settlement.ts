@@ -48,10 +48,10 @@ export function settle(
   const extraDecisions = selectedExtraOptions(selectedPlan, month);
   const selectedOptions = [
     mainOption,
-    ...extraDecisions.map((x) => x.option).filter((o): o is Option => !!o),
+    ...extraDecisions.map((x) => x.option).filter((option): option is Option => !!option),
   ];
   const sumOptionEffects = (key: 'hours' | 'energy' | 'education' | 'skills' | 'safety') =>
-    selectedOptions.reduce((sum, o) => sum + (o[key] || 0), 0);
+    selectedOptions.reduce((sum, option) => sum + (option[key] || 0), 0);
   // Доход учитывается по входящим остаткам: новые пополнения начнут работать позже.
   const interest = roundMoney((state.savings * monthlyConditions.savingsRate) / 1200);
   state.savings = roundMoney(state.savings + interest);
@@ -115,20 +115,21 @@ export function settle(
   recordTransaction('Транспорт', -Math.round(housing.transport * monthlyConditions.inflation));
   recordTransaction('Связь и бытовые расходы', -Math.round(900 * monthlyConditions.inflation));
   recordTransaction('Отдых и личные траты', -selectedPlan.leisure);
-  for (const [index, o] of selectedOptions.entries()) {
-    if (o.cost) recordTransaction('Событие: ' + o.title, -o.cost);
-    if (o.income) recordTransaction('Событие: ' + o.title, o.income);
-    if (o.loan)
+  for (const [index, option] of selectedOptions.entries()) {
+    if (option.cost) recordTransaction('Событие: ' + option.title, -option.cost);
+    if (option.income) recordTransaction('Событие: ' + option.title, option.income);
+    if (option.loan)
       state.loans.push({
         id: `event-${month}${index ? '-' + index : ''}`,
         name: 'Ремонт частями',
-        balance: o.loan,
+        balance: option.loan,
         rate: 0,
         remaining: 5,
-        payment: o.loan / 5,
+        payment: option.loan / 5,
         monthlyFee: 0,
       });
-    if (o.delayed) state.pending.push({ due: month + o.delayed.after, ...o.delayed });
+    if (option.delayed)
+      state.pending.push({ due: month + option.delayed.after, ...option.delayed });
   }
 
   // Новые вещи оплачиваются сейчас; в этом месяце помогают только уже купленные.
@@ -155,8 +156,8 @@ export function settle(
 
   // Прогноз не раскрывает скрытые потери и результат текущего рынка.
   if (reveal)
-    for (const o of selectedOptions)
-      if (o.hiddenLoss) recordTransaction('Потеря: ' + o.title, -o.hiddenLoss);
+    for (const option of selectedOptions)
+      if (option.hiddenLoss) recordTransaction('Потеря: ' + option.title, -option.hiddenLoss);
   state.education = clamp(
     state.education -
       1 +

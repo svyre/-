@@ -1,12 +1,12 @@
-import { memo } from 'react';
 import { CHARACTERS, type CharacterId } from '@/lib/character';
 import { Check } from 'lucide-react';
+import { memo } from 'react';
 
-import boyNeutral from '../../assets/characters/boy-neutral.webp';
 import boyHappy from '../../assets/characters/boy-happy.webp';
+import boyNeutral from '../../assets/characters/boy-neutral.webp';
 import boyThinking from '../../assets/characters/boy-thinking.webp';
-import girlNeutral from '../../assets/characters/girl-neutral.webp';
 import girlHappy from '../../assets/characters/girl-happy.webp';
+import girlNeutral from '../../assets/characters/girl-neutral.webp';
 import girlThinking from '../../assets/characters/girl-thinking.webp';
 
 export type CharacterEmotion = 'neutral' | 'happy' | 'thinking';

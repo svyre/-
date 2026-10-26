@@ -55,9 +55,9 @@ export function PlanPanel({
           value={plan.housing}
           onChange={(e) => updatePlan('housing', e.target.value)}
         >
-          {HOUSING.map((h) => (
-            <option key={h.id} value={h.id}>
-              {h.name} · {rub(Math.round(h.cost * monthlyConditions.inflation))}
+          {HOUSING.map((housing) => (
+            <option key={housing.id} value={housing.id}>
+              {housing.name} · {rub(Math.round(housing.cost * monthlyConditions.inflation))}
             </option>
           ))}
         </select>
@@ -75,15 +75,16 @@ export function PlanPanel({
           value={plan.job}
           onChange={(e) => updatePlan('job', e.target.value)}
         >
-          {JOBS.map((j) => (
-            <option key={j.id} value={j.id}>
-              {j.name} ·{' '}
+          {JOBS.map((job) => (
+            <option key={job.id} value={job.id}>
+              {job.name} ·{' '}
               {rub(
                 Math.round(
-                  (j.income + (j.income ? state.skills * 700 : 0)) * (state.energy < 25 ? 0.7 : 1),
+                  (job.income + (job.income ? state.skills * 700 : 0)) *
+                    (state.energy < 25 ? 0.7 : 1),
                 ),
               )}{' '}
-              · {j.hours} ч
+              · {job.hours} ч
             </option>
           ))}
         </select>
@@ -97,15 +98,15 @@ export function PlanPanel({
           <small>Самостоятельная подготовка</small>
         </div>
         <div className="segment-control" role="group" aria-label="Время на самостоятельную учёбу">
-          {STUDIES.map((t) => (
+          {STUDIES.map((study) => (
             <button
-              key={t.hours}
-              aria-pressed={plan.study === t.hours}
-              className={plan.study === t.hours ? 'active' : ''}
-              onClick={() => updatePlan('study', t.hours)}
-              title={t.name}
+              key={study.hours}
+              aria-pressed={plan.study === study.hours}
+              className={plan.study === study.hours ? 'active' : ''}
+              onClick={() => updatePlan('study', study.hours)}
+              title={study.name}
             >
-              {t.hours} ч
+              {study.hours} ч
             </button>
           ))}
         </div>

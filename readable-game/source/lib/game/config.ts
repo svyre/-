@@ -1,5 +1,3 @@
-// Стартовые условия, цены, ставки и параметры двенадцати месяцев.
-
 import type { DifficultyId, GameState, GoalId } from './types';
 import { clone, percent } from './utils';
 

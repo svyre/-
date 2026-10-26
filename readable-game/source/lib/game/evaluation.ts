@@ -1,5 +1,3 @@
-// Итоговая оценка: цель, резерв, учёба, личный ресурс и безопасность.
-
 import { GOALS } from './config';
 import { capital, debt, essential } from './finance';
 import { defaultPlan } from './planning';
@@ -14,23 +12,23 @@ export function evaluate(
   difficulty: DifficultyId = 'balance',
 ) {
   const goalSettings = GOALS[goal];
-  const monthly = essential(plan || defaultPlan(), month, difficulty);
+  const monthlyExpenses = essential(plan || defaultPlan(), month, difficulty);
   const goalProgress =
     clamp(capital(state) / goalSettings.target, 0, 1) *
     (goalSettings.skills ? Math.min(1, state.skills / goalSettings.skills) : 1);
-  const liquid = Math.max(
+  const liquidReserve = Math.max(
     0,
     state.cash +
       state.savings -
       debt(state) +
-      state.pending.reduce((a, p) => a + Math.min(0, p.cash || 0), 0),
+      state.pending.reduce((total, pending) => total + Math.min(0, pending.cash || 0), 0),
   );
-  const reserve = liquid / (monthly * 2);
+  const reserveRatio = liquidReserve / (monthlyExpenses * 2);
   const parts = [
     { name: 'Достижение цели', value: Math.round(goalProgress * 35), max: 35 },
     {
       name: 'Запас и обязательства',
-      value: Math.round(clamp(reserve, 0, 1) * 25 * Math.max(0, 1 - state.deficits * 0.12)),
+      value: Math.round(clamp(reserveRatio, 0, 1) * 25 * Math.max(0, 1 - state.deficits * 0.12)),
       max: 25,
     },
     { name: 'Учёба', value: Math.round((state.education / 100) * 20), max: 20 },
@@ -41,7 +39,7 @@ export function evaluate(
     total: parts.reduce((a, x) => a + x.value, 0),
     parts,
     goalProgress: Math.round(goalProgress * 100),
-    reserveMonths: roundMoney(liquid / monthly),
+    reserveMonths: roundMoney(liquidReserve / monthlyExpenses),
     achieved: goalProgress >= 1 && state.education >= 60 && state.energy >= 35 && state.cash >= 0,
   };
 }

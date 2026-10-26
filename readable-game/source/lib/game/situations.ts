@@ -1,5 +1,3 @@
-// Поиск ситуаций по сохранённым идентификаторам и выбранным решениям.
-
 import { SCENARIOS } from './situations/core';
 import { NEW_SITUATIONS } from './situations/extended';
 import { EXTRA_SITUATIONS } from './situations/legacy';
@@ -14,19 +12,17 @@ export const SITUATION_IDS = [
 
 export function getScenario(id: string): Scenario | undefined {
   if (/^main-(?:[0-9]|1[01])$/.test(id)) return SCENARIOS[Number(id.slice(5))];
-  return Object.hasOwn(EXTRA_SITUATIONS, id)
-    ? EXTRA_SITUATIONS[id].scenario
-    : Object.hasOwn(NEW_SITUATIONS, id)
-      ? NEW_SITUATIONS[id]
-      : undefined;
+  if (Object.hasOwn(EXTRA_SITUATIONS, id)) return EXTRA_SITUATIONS[id].scenario;
+  if (Object.hasOwn(NEW_SITUATIONS, id)) return NEW_SITUATIONS[id];
+  return undefined;
 }
 
-export function planScenario(p: Pick<Plan, 'scenario'>, month: number): Scenario {
-  return (p.scenario && getScenario(p.scenario)) || SCENARIOS[month];
+export function planScenario(plan: Pick<Plan, 'scenario'>, month: number): Scenario {
+  return (plan.scenario && getScenario(plan.scenario)) || SCENARIOS[month];
 }
 
-export function planSituationIds(p: Plan, month: number): string[] {
-  return [p.scenario || `main-${month}`, ...(p.extras || []).map((e) => e.scenario)];
+export function planSituationIds(plan: Plan, month: number): string[] {
+  return [plan.scenario || `main-${month}`, ...(plan.extras || []).map((event) => event.scenario)];
 }
 
 export function extraSituationIds(month: number, seed: number, count: number = 1): string[] {
@@ -35,8 +31,8 @@ export function extraSituationIds(month: number, seed: number, count: number = 1
   return pair.slice(0, Math.max(0, Math.min(2, count)));
 }
 
-export function selectedExtraOptions(p: Plan, _month: number) {
-  return (p.extras || []).map((event) => {
+export function selectedExtraOptions(plan: Plan, _month: number) {
+  return (plan.extras || []).map((event) => {
     const scenario = getScenario(event.scenario);
     return {
       event,

@@ -1,5 +1,3 @@
-// План месяца: исходные значения, занятое время и проверка ограничений.
-
 import { DIFFICULTIES, HOUSING, JOBS, OFFERS, STUDIES, difficultyId } from './config';
 import { debt } from './finance';
 import { ROOM_ITEMS, roomGifts, roomInventory } from './furniture';

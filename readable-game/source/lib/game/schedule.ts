@@ -43,12 +43,13 @@ export function ensureStorySchedule(game: {
     Array.isArray(schedule) &&
     schedule.length === 12 &&
     schedule.every(
-      (ids, m) =>
+      (ids, monthIndex) =>
         Array.isArray(ids) &&
         ids.length >= 1 &&
         ids.length <= 3 &&
         ids.every((id) => typeof id === 'string' && !!getScenario(id)) &&
-        (m >= completedMonths.length || JSON.stringify(ids) === JSON.stringify(completedMonths[m])),
+        (monthIndex >= completedMonths.length ||
+          JSON.stringify(ids) === JSON.stringify(completedMonths[monthIndex])),
     ) &&
     new Set(schedule.flat()).size === schedule.flat().length
   )

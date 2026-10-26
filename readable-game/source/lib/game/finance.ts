@@ -1,10 +1,9 @@
-// Капитал, обязательные расходы и полная стоимость кредита.
-
 import { HOUSING, OFFERS, macroFor } from './config';
 import type { DifficultyId, GameState, Plan } from './types';
 import { roundMoney } from './utils';
 
-export const debt = (state: GameState) => state.loans.reduce((a, l) => a + l.balance, 0);
+export const debt = (state: GameState) =>
+  state.loans.reduce((total, loan) => total + loan.balance, 0);
 
 export const capital = (state: GameState) =>
   roundMoney(
@@ -12,7 +11,7 @@ export const capital = (state: GameState) =>
       state.savings +
       state.fund -
       debt(state) +
-      state.pending.reduce((a, p) => a + Math.min(0, p.cash || 0), 0),
+      state.pending.reduce((total, pending) => total + Math.min(0, pending.cash || 0), 0),
   );
 
 export const essential = (plan: Plan, month: number, difficulty: DifficultyId = 'balance') => {

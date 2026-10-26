@@ -1,5 +1,5 @@
-import { memo } from 'react';
 import type { PropKind } from '@/lib/story-scenes';
+import { memo } from 'react';
 import { bankLogo } from './bank-brand';
 function Laptop({ used = false }: { used?: boolean }) {
   return (

@@ -133,12 +133,8 @@ export function BudgetSidebar({
           disabled={!canCommit}
           onClick={() => onCommit(plan)}
         >
-          {
-            <>
-              {'Завершить месяц'}
-              <ArrowRight size={18} />
-            </>
-          }
+          {'Завершить месяц'}
+          <ArrowRight size={18} />
         </button>
         <div className="budget-foot">
           <LockKeyhole size={12} />

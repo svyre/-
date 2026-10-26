@@ -12,37 +12,37 @@ export function Modal({
   onClose: () => void;
   wide?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
   useEffect(() => {
-    const before = document.activeElement as HTMLElement;
-    const overflow = document.body.style.overflow;
+    const previousFocus = document.activeElement as HTMLElement;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    ref.current?.focus();
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeRef.current();
-      if (e.key === 'Tab') {
-        const items = ref.current?.querySelectorAll<HTMLElement>(
+    dialogRef.current?.focus();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeRef.current();
+      if (event.key === 'Tab') {
+        const focusableElements = dialogRef.current?.querySelectorAll<HTMLElement>(
           'button:not([disabled]),input,select,a[href],[tabindex="0"]',
         );
-        if (!items?.length) return;
-        const first = items[0];
-        const last = items[items.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
+        if (!focusableElements?.length) return;
+        const first = focusableElements[0];
+        const last = focusableElements[focusableElements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
           last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
           first.focus();
         }
       }
     };
-    document.addEventListener('keydown', handler);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.body.style.overflow = overflow;
-      document.removeEventListener('keydown', handler);
-      before?.focus();
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+      previousFocus?.focus();
     };
   }, []);
   return (
@@ -58,7 +58,7 @@ export function Modal({
         aria-modal="true"
         aria-label={title}
         tabIndex={-1}
-        ref={ref}
+        ref={dialogRef}
       >
         <div className="modal-head">
           <h2>{title}</h2>
