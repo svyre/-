@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { CharacterId } from '@/lib/character';
 import { bankLogo } from './bank-brand';
 import { CharacterFigure } from './Character';
@@ -9,7 +10,7 @@ const edge = {
   strokeLinecap: 'round' as const,
 };
 /** A cutaway room, with furniture on the same floor plane as the player. */
-export function RoomInterior({
+export const RoomInterior = memo(function RoomInterior({
   housing,
   owned = [],
   planned = [],
@@ -308,4 +309,4 @@ export function RoomInterior({
       {studio && <path d="m393 123 27-9v49l-27 10Z" fill="#ced8cb" {...edge} />}
     </svg>
   );
-}
+});

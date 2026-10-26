@@ -36,9 +36,12 @@ export function extraSituationIds(month: number, seed: number, count: number = 1
 }
 
 export function selectedExtraOptions(p: Plan, _month: number) {
-  return (p.extras || []).map((event) => ({
-    event,
-    scenario: getScenario(event.scenario),
-    option: getScenario(event.scenario)?.options.find((o) => o.id === event.choice),
-  }));
+  return (p.extras || []).map((event) => {
+    const scenario = getScenario(event.scenario);
+    return {
+      event,
+      scenario,
+      option: scenario?.options.find((option) => option.id === event.choice),
+    };
+  });
 }

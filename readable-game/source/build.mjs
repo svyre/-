@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { optimizeStyles } from './scripts/optimize-styles.mjs';
 
 const SOURCE_DIRECTORY = path.dirname(fileURLToPath(import.meta.url));
 
@@ -22,11 +23,11 @@ function assetUrl(filename, mimeType) {
 }
 
 function readStyles() {
-  const fontUrl = assetUrl('assets/Onest.ttf', 'font/ttf');
+  const fontUrl = assetUrl('assets/Onest.woff2', 'font/woff2');
   const fontFace = `
 @font-face {
   font-family: Onest;
-  src: url(${fontUrl}) format('truetype');
+  src: url(${fontUrl}) format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -83,12 +84,28 @@ export async function buildPage(esbuild, outputDirectory) {
   if (script.includes('/api/room')) {
     throw new Error('В одиночную сборку попал серверный маршрут командной комнаты.');
   }
-  const html = createPage(script, readStyles());
+  const sources = ['app', 'lib'].flatMap((directory) =>
+    fs
+      .readdirSync(path.join(SOURCE_DIRECTORY, directory), { recursive: true })
+      .filter((filename) => /\.tsx?$/.test(filename))
+      .map((filename) => fs.readFileSync(path.join(SOURCE_DIRECTORY, directory, filename), 'utf8')),
+  );
+  const styles = await optimizeStyles(readStyles(), sources);
+  const html = createPage(script, styles.css);
   fs.mkdirSync(output, { recursive: true });
   const filename = path.join(output, 'index.html');
   fs.writeFileSync(filename, html);
   fs.writeFileSync(path.join(output, '.nojekyll'), '');
-  console.log(JSON.stringify({ file: filename, bytes: Buffer.byteLength(html) }));
+  const stats = {
+    file: filename,
+    bytes: Buffer.byteLength(html),
+    scriptBytes: Buffer.byteLength(script),
+    cssBeforeBytes: styles.beforeBytes,
+    cssAfterBytes: styles.afterBytes,
+    removedSelectors: styles.removedSelectors,
+  };
+  console.log(JSON.stringify(stats));
+  return stats;
 }
 
 const isCommandLineRun =

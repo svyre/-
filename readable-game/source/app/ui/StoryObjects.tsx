@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { PropKind } from '@/lib/story-scenes';
 import { bankLogo } from './bank-brand';
 function Laptop({ used = false }: { used?: boolean }) {
@@ -52,7 +53,7 @@ function Phone({ cracked = false }: { cracked?: boolean }) {
   );
 }
 
-export function StoryObject({ kind }: { kind: PropKind }) {
+export const StoryObject = memo(function StoryObject({ kind }: { kind: PropKind }) {
   const line = {
     stroke: '#344652',
     strokeWidth: 3,
@@ -362,4 +363,4 @@ export function StoryObject({ kind }: { kind: PropKind }) {
       )}
     </svg>
   );
-}
+});

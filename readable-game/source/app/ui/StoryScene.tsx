@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { CHARACTERS, type CharacterId } from '@/lib/character';
 import { MONTHS, SCENARIOS, type Scenario } from '@/lib/game';
 import { storyLocation, type LocationId } from '@/lib/locations';
@@ -20,7 +21,7 @@ import { SceneEnvironment, SceneSurface } from './SceneEnvironment';
 import { StoryObject } from './StoryObjects';
 import { useSceneMotion } from './useSceneMotion';
 
-function World({
+const World = memo(function World({
   month,
   choice,
   character,
@@ -71,7 +72,7 @@ function World({
             opacity={choice === i ? 0.75 : 0.08}
           />
           <g
-            key={`${choice === i}-${reaction}`}
+            key={choice === i ? `picked-${reaction}` : 'rest'}
             className={choice === i ? 'scene-object-picked' : 'scene-object-rest'}
           >
             <svg x="-5" y="-19" width="170" height="126" viewBox="0 0 180 130">
@@ -94,7 +95,7 @@ function World({
       )}
     </svg>
   );
-}
+});
 
 export function StoryScene({
   month,
@@ -147,8 +148,9 @@ export function StoryScene({
         <span className="story-topic">{scenario.topic}</span>
       </div>
       <div
+        ref={motion.sceneRef}
         className="story-stage"
-        data-motion={motion.enabled ? 'on' : 'off'}
+        data-motion={motion.mode}
         data-location={location}
       >
         <div className="story-hud">

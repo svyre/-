@@ -1,6 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 const STORAGE = 'na-sebe-scene-motion';
 export function useSceneMotion() {
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(true);
+  const [pageVisible, setPageVisible] = useState(
+    () => typeof document === 'undefined' || document.visibilityState !== 'hidden',
+  );
   const [wanted, setWanted] = useState(() => {
     try {
       return localStorage.getItem(STORAGE) !== 'off';
@@ -20,6 +25,19 @@ export function useSceneMotion() {
     query.addEventListener('change', update);
     return () => query.removeEventListener('change', update);
   }, []);
+  useEffect(() => {
+    const update = () => setPageVisible(document.visibilityState !== 'hidden');
+    document.addEventListener('visibilitychange', update);
+    update();
+    return () => document.removeEventListener('visibilitychange', update);
+  }, []);
+  useEffect(() => {
+    const scene = sceneRef.current;
+    if (!scene || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    observer.observe(scene);
+    return () => observer.disconnect();
+  }, []);
   const toggle = () =>
     setWanted((value) => {
       const next = !value;
@@ -28,5 +46,13 @@ export function useSceneMotion() {
       } catch {}
       return next;
     });
-  return { enabled: wanted && !reduced, reduced, toggle };
+  const enabled = wanted && !reduced;
+  const running = enabled && pageVisible && inView;
+  return {
+    enabled,
+    mode: !enabled ? 'off' : running ? 'on' : 'suspended',
+    reduced,
+    toggle,
+    sceneRef,
+  };
 }

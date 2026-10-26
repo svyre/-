@@ -57,55 +57,58 @@
   transform-box: fill-box;
   transform-origin: center;
 }
-.story-stage[data-motion='on'] .scene-environment {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .scene-environment {
   animation: scene-settle 0.4s ease-out both;
 }
-.story-stage[data-motion='on'] .character-idle {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .character-idle {
   animation: character-breathe 6s ease-in-out infinite;
 }
-.story-stage[data-motion='on'] .pose-neutral {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .pose-neutral {
   animation: character-arrive 0.55s cubic-bezier(0.2, 0.7, 0.25, 1) both;
 }
-.story-stage[data-motion='on'] .pose-happy {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .pose-happy {
   animation: character-joy 0.85s ease-in-out both;
 }
-.story-stage[data-motion='on'] .pose-thinking {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .pose-thinking {
   animation: character-consider 0.8s ease-in-out both;
 }
-.story-stage[data-motion='on'] .scene-object-picked {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .scene-object-picked {
   animation: object-confirm 0.42s ease-out both;
 }
-.story-stage[data-motion='on'] .scene-reaction-glints {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .scene-reaction-glints {
   animation: choice-glints 0.7s ease-out both;
 }
-.story-stage[data-motion='on'] .ambient-cloud {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-cloud {
   animation: cloud-drift 18s ease-in-out infinite alternate;
 }
-.story-stage[data-motion='on'] .ambient-steam {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-steam {
   animation: steam-rise 3s ease-in-out infinite;
 }
-.story-stage[data-motion='on'] .ambient-cursor {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-cursor {
   animation: cursor-blink 4s steps(1, end) infinite;
 }
-.story-stage[data-motion='on'] .ambient-indicator {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-indicator {
   animation: terminal-light 5s ease-in-out infinite;
 }
-.story-stage[data-motion='on'] .ambient-washer {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-washer {
   animation: washer-turn 12s linear infinite;
 }
-.story-stage[data-motion='on'] .ambient-train {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-train {
   animation: train-depart 26s ease-in-out infinite;
 }
-.story-stage[data-motion='on'] .ambient-water {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-water {
   animation: water-drift 5s ease-in-out infinite alternate;
 }
-.story-stage[data-motion='on'] .ambient-rain {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-rain {
   animation: rain-fall 1.3s linear infinite;
 }
-.story-stage[data-motion='on'] .ambient-snow {
+.story-stage:is([data-motion='on'], [data-motion='suspended']) .ambient-snow {
   animation: snow-drift 7s ease-in-out infinite alternate;
 }
 /* Pausing returns every layer to its clear static pose, including a departing train. */
+.story-stage[data-motion='suspended'] * {
+  animation-play-state: paused !important;
+}
 .story-stage[data-motion='off'] * {
   animation: none !important;
   transition: none !important;

@@ -27,7 +27,7 @@ import {
   House,
   Landmark,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { BankStoryBanner } from './BankIdentity';
 import { BankPanel } from './BankPanel';
 import { BudgetSidebar } from './BudgetSidebar';
@@ -75,8 +75,9 @@ export function Game({
   const [tab, setTab] = useState<'room' | 'decisions' | 'plan' | 'bank' | 'history'>('room');
   const [activeSituation, setActiveSituation] = useState(0);
   const [isShopOpen, setShopOpen] = useState(false);
-  const updatePlan = <K extends keyof Plan>(key: K, value: Plan[K]) =>
-    setPlan((p) => ({ ...p, [key]: value }));
+  const updatePlan = useCallback(<K extends keyof Plan>(key: K, value: Plan[K]) => {
+    setPlan((current) => (Object.is(current[key], value) ? current : { ...current, [key]: value }));
+  }, []);
   const scenario = planScenario(plan, monthIndex);
   const eventCount = 1 + (plan.extras?.length || 0);
   const remainingDecisions =
@@ -84,22 +85,30 @@ export function Game({
   const currentExtra = activeSituation > 0 ? plan.extras?.[activeSituation - 1] : undefined;
   const situationId = currentExtra?.scenario || plan.scenario || `main-${monthIndex}`;
   const sceneScenario = currentExtra ? getScenario(currentExtra.scenario)! : scenario;
-  const sceneStory = extraStory(situationId, monthIndex);
   const replaceDesk = situationId === 'desk' && roomInventory(state).includes('desk');
-  const contextualScenario = replaceDesk
-    ? {
-        ...sceneScenario,
-        document: {
-          ...sceneScenario.document,
-          text:
-            sceneScenario.document.text +
-            ' Удобный стол уже есть в твоей комнате. Эти варианты означают его замену или доработку. Повторный стол не увеличивает постоянную помощь комнаты.',
-        },
-      }
-    : sceneScenario;
-  if (replaceDesk)
-    sceneStory.line =
-      'У тебя уже есть удобный стол. Появились варианты замены или доработки рабочего места. Стоит ли тратиться ещё раз?';
+  const sceneStory = useMemo(() => {
+    const story = extraStory(situationId, monthIndex);
+    if (replaceDesk) {
+      story.line =
+        'У тебя уже есть удобный стол. Появились варианты замены или доработки рабочего места. Стоит ли тратиться ещё раз?';
+    }
+    return story;
+  }, [situationId, monthIndex, replaceDesk]);
+  const contextualScenario = useMemo(
+    () =>
+      replaceDesk
+        ? {
+            ...sceneScenario,
+            document: {
+              ...sceneScenario.document,
+              text:
+                sceneScenario.document.text +
+                ' Удобный стол уже есть в твоей комнате. Эти варианты означают его замену или доработку. Повторный стол не увеличивает постоянную помощь комнаты.',
+            },
+          }
+        : sceneScenario,
+    [sceneScenario, replaceDesk],
+  );
   const selectDecision = (value: string) =>
     activeSituation === 0
       ? updatePlan('choice', value)
@@ -109,7 +118,10 @@ export function Game({
             i === activeSituation - 1 ? { ...event, choice: value } : event,
           ),
         );
-  const error = validatePlan(plan, state, monthIndex, false, data.difficulty);
+  const error = useMemo(
+    () => validatePlan(plan, state, monthIndex, false, data.difficulty),
+    [plan, state, monthIndex, data.difficulty],
+  );
   const forecast = useMemo(() => {
     try {
       return {

@@ -1,16 +1,31 @@
+import { memo } from 'react';
 import { CHARACTERS, type CharacterId } from '@/lib/character';
 import { Check } from 'lucide-react';
 
-import sprites from '../../assets/characters.png';
+import boyNeutral from '../../assets/characters/boy-neutral.webp';
+import boyHappy from '../../assets/characters/boy-happy.webp';
+import boyThinking from '../../assets/characters/boy-thinking.webp';
+import girlNeutral from '../../assets/characters/girl-neutral.webp';
+import girlHappy from '../../assets/characters/girl-happy.webp';
+import girlThinking from '../../assets/characters/girl-thinking.webp';
 
 export type CharacterEmotion = 'neutral' | 'happy' | 'thinking';
-const frames: Record<CharacterId, Record<CharacterEmotion, string>> = {
-  boy: { neutral: '195 12 280 526', happy: '625 12 310 526', thinking: '1080 12 300 526' },
-  girl: { neutral: '180 538 300 486', happy: '625 538 310 486', thinking: '1070 538 310 486' },
+type CharacterFrame = { source: string; viewBox: string; width: number; height: number };
+const frames: Record<CharacterId, Record<CharacterEmotion, CharacterFrame>> = {
+  boy: {
+    neutral: { source: boyNeutral, viewBox: '51 12 280 526', width: 384, height: 544 },
+    happy: { source: boyHappy, viewBox: '33 12 310 526', width: 384, height: 544 },
+    thinking: { source: boyThinking, viewBox: '40 12 300 526', width: 384, height: 544 },
+  },
+  girl: {
+    neutral: { source: girlNeutral, viewBox: '20 10 300 486', width: 352, height: 496 },
+    happy: { source: girlHappy, viewBox: '17 10 310 486', width: 352, height: 496 },
+    thinking: { source: girlThinking, viewBox: '30 10 310 486', width: 368, height: 496 },
+  },
 };
 const emotions = { neutral: 'спокойствие', happy: 'радость', thinking: 'размышление' };
-/** A single embedded sheet keeps identity consistent across all six poses. */
-export function CharacterFigure({
+/** Each lossless frame includes the SVG viewport margins, preserving the original crop. */
+export const CharacterFigure = memo(function CharacterFigure({
   character,
   emotion = 'neutral',
   reaction = 0,
@@ -19,6 +34,7 @@ export function CharacterFigure({
   emotion?: CharacterEmotion;
   reaction?: number;
 }) {
+  const frame = frames[character][emotion];
   return (
     <g className="character-figure" data-character={character} data-emotion={emotion}>
       <g className="character-idle">
@@ -28,18 +44,18 @@ export function CharacterFigure({
             y="0"
             width="220"
             height="320"
-            viewBox={frames[character][emotion]}
+            viewBox={frame.viewBox}
             preserveAspectRatio="xMidYMax meet"
             overflow="hidden"
           >
-            <image href={sprites} x="0" y="0" width="1536" height="1024" />
+            <image href={frame.source} x="0" y="0" width={frame.width} height={frame.height} />
           </svg>
         </g>
       </g>
     </g>
   );
-}
-export function CharacterArt({
+});
+export const CharacterArt = memo(function CharacterArt({
   character,
   portrait = false,
   emotion = 'neutral',
@@ -58,7 +74,7 @@ export function CharacterArt({
       <CharacterFigure character={character} emotion={emotion} />
     </svg>
   );
-}
+});
 
 export function CharacterPicker({
   value,

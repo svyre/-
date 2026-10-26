@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { LOCATIONS, type LocationId } from '@/lib/locations';
 import { bankLogo } from './bank-brand';
 
@@ -177,7 +178,7 @@ function Washer({ x, y }: { x: number; y: number }) {
 }
 
 /** Location drawings deliberately keep the middle shelf free for the three interactive objects. */
-export function SceneEnvironment({
+export const SceneEnvironment = memo(function SceneEnvironment({
   location,
   month,
   rain = false,
@@ -589,9 +590,9 @@ export function SceneEnvironment({
       <path d="M0 413h900" stroke="#fff" strokeOpacity=".15" strokeWidth="2" />
     </g>
   );
-}
+});
 
-export function SceneSurface({ location }: { location: LocationId }) {
+export const SceneSurface = memo(function SceneSurface({ location }: { location: LocationId }) {
   const color =
     location === 'bank'
       ? '#c7d7ed'
@@ -609,4 +610,4 @@ export function SceneSurface({ location }: { location: LocationId }) {
       <path d="M166 312h567" stroke="#fff" strokeOpacity=".2" strokeWidth="3" />
     </g>
   );
-}
+});

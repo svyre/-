@@ -615,17 +615,20 @@
   transform-box: fill-box;
   transform-origin: 50% 100%;
 }
-.player-room-canvas[data-motion='on'] .character-idle {
+.player-room-canvas:is([data-motion='on'], [data-motion='suspended']) .character-idle {
   animation: character-breathe 6s ease-in-out infinite;
 }
-.player-room-canvas[data-motion='on'] .pose-neutral {
+.player-room-canvas:is([data-motion='on'], [data-motion='suspended']) .pose-neutral {
   animation: character-arrive 0.55s ease-out both;
 }
-.player-room-canvas[data-motion='on'] .pose-happy {
+.player-room-canvas:is([data-motion='on'], [data-motion='suspended']) .pose-happy {
   animation: character-joy 0.85s ease-in-out both;
 }
-.player-room-canvas[data-motion='on'] .pose-thinking {
+.player-room-canvas:is([data-motion='on'], [data-motion='suspended']) .pose-thinking {
   animation: character-consider 0.8s ease-in-out both;
+}
+.player-room-canvas[data-motion='suspended'] * {
+  animation-play-state: paused !important;
 }
 .player-room-canvas[data-motion='off'] * {
   animation: none !important;

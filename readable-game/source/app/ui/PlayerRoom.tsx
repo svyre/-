@@ -35,7 +35,7 @@ import {
   Table2,
   X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RoomInterior } from './PlayerRoomArt';
 import { useSceneMotion } from './useSceneMotion';
 
@@ -88,10 +88,12 @@ export function PlayerRoom({
   });
   const motion = useSceneMotion();
   const housing = HOUSING.find((h) => h.id === plan.housing)!;
-  const owned = roomInventory(state);
+  const owned = useMemo(() => roomInventory(state), [state.roomItems]);
   const effects = roomEffects(state);
-  const gifts = roomGifts(plan, month).filter((id) => !owned.includes(id));
-  const planned = [...new Set([...(plan.roomBuy || []), ...gifts])];
+  const planned = useMemo(() => {
+    const gifts = roomGifts(plan, month).filter((id) => !owned.includes(id));
+    return [...new Set([...(plan.roomBuy || []), ...gifts])];
+  }, [plan.scenario, plan.choice, plan.extras, plan.roomVersion, plan.roomBuy, month, owned]);
   const toggleLight = () => {
     const next = !night;
     setNight(next);
@@ -150,8 +152,9 @@ export function PlayerRoom({
         </div>
       </header>
       <div
+        ref={motion.sceneRef}
         className={`player-room-canvas ${night ? 'room-night' : ''}`}
-        data-motion={motion.enabled ? 'on' : 'off'}
+        data-motion={motion.mode}
       >
         <RoomInterior
           housing={plan.housing}
@@ -395,7 +398,7 @@ export function FinalRoom({
           </p>
         </div>
       </header>
-      <div className="player-room-canvas" data-motion={motion.enabled ? 'on' : 'off'}>
+      <div ref={motion.sceneRef} className="player-room-canvas" data-motion={motion.mode}>
         <RoomInterior
           housing={housing}
           owned={owned}
