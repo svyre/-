@@ -1,6 +1,8 @@
 # Готовая игра «На себе»
 
-**Актуальная игра:** [скачать ZIP после проверки читаемости — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-reviewed.zip). [Объяснение всех 95 файлов](../readable-game/FILES.md), [правки и изученные источники](../readable-game/CODE_REVIEW.md), [результаты оптимизации](../readable-game/PERFORMANCE.md) и [архитектура](../readable-game/ARCHITECTURE.md). Уточнены имена, упрощены условия, убраны лишние обёртки и неиспользуемые параметры; настройки сцен объединены по идентификаторам. Пройдены 60 проверок, совпали расчёты 120 игровых лет и снимки интерфейса на двух ширинах. HTML занимает 2,14 МБ; оптимизации сохранены.
+**Новая веб-сборка:** [ZIP для запуска — 1,3 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-game-web.zip) · [полный проект — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-web-source.zip) · [описание файлов](../web-game/FILES.md). Распакуйте всю папку игры, затем откройте index.html. Веб-ресурсы находятся отдельно; исходники и инструменты сборки в архив для запуска не включены.
+
+Предыдущий na-sebe-reviewed.zip отмечен Microsoft Defender как Trojan:Script/Ulthar.A!ml. Не восстанавливайте его из карантина для запуска. Повторная проверка Windows Defender здесь недоступна; ClamAV не обнаружил угроз в прежней и новой сборках. Это не отменяет предупреждение Defender. [Отчёт и хеши](SECURITY-CHECK.md). Не добавляйте исключения и не отключайте защиту.
 
 [Актуальный проморолик: озвучка и тихая музыка без приглушения под речь — MP4, 41 секунда, 10,2 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-constant-music.mp4). Постоянный уровень музыки, плавное начало и завершение. [Финальный кадр с логотипами](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner-endcard.jpg).
 

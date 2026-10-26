@@ -1,9 +1,10 @@
-# На себе — версия для просмотра
+# на себе — готовая игра
 
-В этой папке находится готовая HTML-версия игры с комнатой игрока. Файл index.html содержит все скрипты, стили, изображения и шрифт.
+Распакуй весь ZIP в одну папку и открой index.html в браузере. Рядом должны остаться app.js, styles.css, favicon.svg и assets. Для запуска не нужно устанавливать Node.js или запускать команды.
 
-[Открыть через GitHack](https://raw.githack.com/svyre/-/download-na-sebe-game/play/index.html)
+В архиве 17 файлов: 14 файлов готового сайта, этот README, LICENSES.txt и SECURITY_STATUS.md. Исходников, сценариев сборки и установленных зависимостей здесь нет.
 
-[Скачать проверенный ZIP](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-reviewed.zip)
+Microsoft Defender отметил предыдущий na-sebe-reviewed.zip. Новая структура не является подтверждением устранения причины срабатывания: повторная проверка Windows Defender в рабочей среде недоступна. Не отключай защиту и не добавляй исключения. Если Defender снова показывает угрозу, оставь файл в карантине.
 
-GitHack — внешний сервис предпросмотра публичного файла из GitHub. Из рабочей среды его открытие проверить не удалось. Сам HTML проверен в браузере локально, включая мобильный размер и работу без сети.
+Исходники: https://github.com/svyre/-/tree/download-na-sebe-game/web-game/source
+Сведения о проверках и хеши: https://github.com/svyre/-/blob/download-na-sebe-game/downloads/SECURITY-CHECK.md
