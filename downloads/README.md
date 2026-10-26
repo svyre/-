@@ -1,5 +1,7 @@
 # Готовая игра «На себе»
 
+**Актуальная игра:** [скачать ZIP с читаемым кодом — 4,6 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-readable.zip). [Объяснение каждого файла](../readable-game/FILES.md) и [схема работы](../readable-game/ARCHITECTURE.md). Проверены 57 сценариев, совпадение расчётов со старой версией и интерфейс в браузере.
+
 [Актуальный проморолик: озвучка и тихая музыка без приглушения под речь — MP4, 41 секунда, 10,2 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-constant-music.mp4). Постоянный уровень музыки, плавное начало и завершение. [Финальный кадр с логотипами](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner-endcard.jpg).
 
 [Новый динамичный ролик с игрой в телефоне — MP4, 37 секунд, 10,4 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-dynamic.mp4)
