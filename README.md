@@ -1,5 +1,11 @@
 # на себе
 
+[Актуальный проморолик: озвучка и тихая музыка без приглушения под речь — MP4, 41 секунда, 10,2 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-constant-music.mp4). Постоянный уровень музыки, плавное начало и завершение. [Финальный кадр с логотипами](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo-partner-endcard.jpg).
+
+[Проморолик с геймплеем — MP4, 41 секунда](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-promo.mp4)
+
+> **Обновление текстов и переездов:** [игра — ZIP, 1,3 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-update.zip) · [полный проект — 3,0 МБ](https://github.com/svyre/-/raw/refs/heads/download-na-sebe-game/downloads/na-sebe-update-source.zip) · [сайт](https://svyre.github.io/na_sebe/). Сокращены вступления, убраны общие лозунги, плашка «Деньги виртуальные» и лишние подписи при выборе персонажа. Выбранное жильё меняет интерьер только после завершения месяца; до подтверждения видна прежняя комната. Мебель и сохранения остаются. Проверены 76 условий модели, полный год хардкора и 12 переездов через интерфейс. [Подробности и источники](web-game/CODE_REVIEW.md).
+
 Финансовая стратегия для учащихся 10–11 классов. Двенадцать месяцев первого года самостоятельной жизни: бюджет, время, работа, учёба, резерв, кредиты и проверка финансовых предложений.
 
 ## Режимы
